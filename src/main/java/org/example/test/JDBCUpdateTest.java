@@ -1,18 +1,32 @@
-package org.example;
+package org.example.test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class JDBCConnectTest {
+public class JDBCUpdateTest {
   public static void main(String[] args) {
     Connection conn = null;
+    PreparedStatement pstmt = null;
 
     try {
       Class.forName("org.mariadb.jdbc.Driver");
       String url = "jdbc:mariadb://127.0.0.1:3306/JDBC_AM_26_04?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
       conn = DriverManager.getConnection(url, "root", "");
       System.out.println("연결 성공!");
+
+      String sql = "UPDATE article";
+      sql += " SET title = '새제목30',";
+      sql += "`body` = '새내용30',";
+      sql += "updateDate = NOW()";
+      sql += "WHERE id = 2;";
+
+      System.out.println(sql);
+
+      pstmt = conn.prepareStatement(sql);
+      int affectedRow = pstmt.executeUpdate();
+      System.out.println("affectedRow = " + affectedRow);
 
     } catch (ClassNotFoundException e) {
       System.out.println("드라이버 로딩 실패" + e);
