@@ -1,5 +1,6 @@
 package org.example.util;
 
+// 쿼리 작성해주는?
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
