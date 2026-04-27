@@ -13,20 +13,22 @@ public class Article {
     this.id = id;
   }
 
-  public Article(int id, String regDate, String updateDate,String title, String body) {
+  public Article(int id, String regDate, String updateDate, String title, String body) {
     this.id = id;
     this.regDate = regDate;
     this.updateDate = updateDate;
     this.title = title;
     this.body = body;
   }
-public Article(Map<String, Object> articlesMap){
-  this.id = (int) articlesMap.get("id");
-  this.regDate = (String) articlesMap.get("regDate");
-  this.updateDate = (String) articlesMap.get("updateDate");
-  this.title = (String) articlesMap.get("title");
-  this.body = (String) articlesMap.get("body");
-}
+
+  public Article(Map<String, Object> articlesMap) {
+    this.id = (int) articlesMap.get("id");
+    this.regDate = (String) articlesMap.get("regDate");
+    this.updateDate = (String) articlesMap.get("updateDate");
+    this.title = (String) articlesMap.get("title");
+    this.body = (String) articlesMap.get("body");
+  }
+
   public String getRegDate() {
     return regDate;
   }

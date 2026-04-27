@@ -38,3 +38,11 @@ SET title = '새제목30',
     `body` = '새내용30',
     updateDate = NOW()
 WHERE id = 2;
+
+CREATE TABLE `memeber` (
+                           id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                           memberId VARCHAR(100) NOT NULL UNIQUE,
+                           memberPw TEXT NOT NULL,
+                           `name` VARCHAR(100) NOT NULL,
+                           regDate DATETIME NOT NULL
+);
