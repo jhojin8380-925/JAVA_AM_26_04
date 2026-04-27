@@ -95,7 +95,7 @@ public class DBUtil {
     return "";
   }
 
-  public static boolean selectRowBooleanValue(Connection dbConn, SecSql sql) {
+  public static boolean selectRowBooleanValue(Connection dbConn, SecSql sql) { //sql 의 입력값을 넘겨받아서
     Map<String, Object> row = selectRow(dbConn, sql);
 
     for (String key : row.keySet()) {
