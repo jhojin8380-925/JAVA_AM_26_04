@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class ArticleDao {
 
-
   public int dowrite(Connection conn, String title, String body) {
 
     SecSql sql = new SecSql();

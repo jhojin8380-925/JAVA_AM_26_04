@@ -1,8 +1,10 @@
 package org.example.service;
 
+import org.example.Member;
 import org.example.dao.MemberDao;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class MemberService {
 
@@ -18,5 +20,9 @@ public class MemberService {
 
   public int doJoin(Connection conn, String loginId, String loginPw, String name) {
     return memberDao.doJoin(conn, loginId, loginPw, name);
+  }
+
+  public List<Member> getlogininfo(Connection conn, String loginId) {
+    return memberDao.getlogininfo(conn, loginId);
   }
 }
