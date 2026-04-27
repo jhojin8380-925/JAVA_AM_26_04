@@ -2,13 +2,10 @@ package org.example;
 
 import org.example.controller.ArticleController;
 import org.example.controller.MemberController;
-import org.example.util.DBUtil;
-import org.example.util.SecSql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -71,61 +68,9 @@ public class App {
     } else if (cmd.startsWith("article modify")) {
       articleController.domodify();
     } else if (cmd.startsWith("article detail")) {
-      int id = 0;
-
-      try {
-        id = Integer.parseInt(cmd.split(" ")[2]);
-      } catch (Exception e) {
-        System.out.println("번호는 정수로 입력해");
-        return 0;
-      }
-      SecSql sql = new SecSql();
-      sql.append("SELECT *");
-      sql.append("FROM article");
-      sql.append("WHERE id = ?;", id);
-
-      Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-      if (articleMap.isEmpty()) {
-        System.out.println(id + "번 글은 없음");
-        return 0;
-      }
-
-      System.out.println("== 상세보기 ==");
-      Article article = new Article(articleMap);
-      System.out.println("번호 : " + article.getId());
-      System.out.println("작성날짜 : " + article.getRegDate());
-      System.out.println("수정날짜 : " + article.getUpdateDate());
-      System.out.println("제목 : " + article.getTitle());
-      System.out.println("내용 : " + article.getBody());
-
+      articleController.dodetail();
     } else if (cmd.startsWith("article delete")) {
-      int id = 0;
-
-      try {
-        id = Integer.parseInt(cmd.split(" ")[2]);
-      } catch (Exception e) {
-        System.out.println("번호는 정수로 입력해");
-        return 0;
-      }
-      SecSql sql = new SecSql();
-      sql.append("SELECT *");
-      sql.append("FROM article");
-      sql.append("WHERE id = ?;", id);
-
-      Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-      if (articleMap.isEmpty()) {
-        System.out.println(id + "번 글은 없음");
-        return 0;
-      }
-
-      System.out.println("== 삭제 ==");
-      sql = new SecSql();
-      sql.append("DELETE FROM article");
-      sql.append("WHERE id = ?;", id);
-
-      DBUtil.delete(conn, sql);
-
-      System.out.println(id + "번 글이 삭제되었습니다.");
+      articleController.dodelete();
     }
     return 0;
   }

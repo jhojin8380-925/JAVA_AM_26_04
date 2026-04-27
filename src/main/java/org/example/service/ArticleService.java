@@ -22,7 +22,19 @@ public class ArticleService {
     return articleDao.dolist(conn);
   }
 
-  public boolean doSelect(Connection conn, int id) { return articleDao.doSelect(conn, id);}
+  public boolean doSelect(Connection conn, int id) {
+    return articleDao.doSelect(conn, id);
+  }
 
-  public int domodify(Connection conn, int id, String title, String body) { return articleDao.domodify(conn, id, title, body); }
+  public int domodify(Connection conn, int id, String title, String body) {
+    return articleDao.domodify(conn, id, title, body);
+  }
+
+  public List<Article> dodetail(Connection conn, int id) {
+    return articleDao.dodetail(conn, id);
+  }
+
+  public int dodelete(Connection conn, int id) {
+    return articleDao.dodelete(conn, id);
+  }
 }
