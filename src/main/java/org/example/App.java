@@ -8,8 +8,6 @@ import org.example.util.SecSql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -69,31 +67,8 @@ public class App {
     } else if (cmd.equals("article write")) {
       articleController.dowrite();
     } else if (cmd.equals("article list")) {
-      System.out.println("== 목록 ==");
-
-      List<Article> articles = new ArrayList<>();
-
-      SecSql sql = new SecSql();
-      sql.append("SELECT *");
-      sql.append("FROM article");
-      sql.append("ORDER BY id DESC");
-
-      List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
-      for (Map<String, Object> articleMap : articleListMap) {
-        articles.add(new Article(articleMap));
-      }
-      if (articles.size() == 0) {
-        System.out.println("게시글이 없습니다");
-        return 0;
-      }
-
-
-      System.out.println("  번호  /   제목  ");
-      for (Article article : articles) {
-        System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
-      }
+      articleController.dolist();
     } else if (cmd.startsWith("article modify")) {
-
       int id = 0;
 
       try {

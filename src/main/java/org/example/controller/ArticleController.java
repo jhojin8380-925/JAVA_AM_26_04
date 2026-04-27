@@ -1,8 +1,10 @@
 package org.example.controller;
 
+import org.example.Article;
 import org.example.service.ArticleService;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
 
 public class ArticleController {
@@ -26,6 +28,21 @@ public class ArticleController {
 
     int id = articleService.dowrite(conn, title, body);
     System.out.println(id + "번 글이 생성됨");
+  }
+
+  public void dolist() {
+    System.out.println("== 목록 ==");
+
+    List<Article> articles = articleService.dolist(conn);
+
+    if (articles.size() == 0) {
+      System.out.println("게시글이 없습니다");
+      return;
+    }
+    System.out.println("  번호  /   제목  ");
+    for (Article article : articles) {
+      System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
+    }
   }
 
 }
