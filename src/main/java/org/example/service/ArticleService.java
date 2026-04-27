@@ -18,7 +18,11 @@ public class ArticleService {
     return articleDao.dowrite(conn, title, body);
   }
 
-public List<Article> dolist(Connection conn) { return articleDao.dolist(conn); }
+  public List<Article> dolist(Connection conn) {
+    return articleDao.dolist(conn);
+  }
 
+  public boolean doSelect(Connection conn, int id) { return articleDao.doSelect(conn, id);}
 
+  public int domodify(Connection conn, int id, String title, String body) { return articleDao.domodify(conn, id, title, body); }
 }

@@ -60,7 +60,7 @@ public class App {
       return -1;
     }
     MemberController memberController = new MemberController(sc, conn);
-    ArticleController articleController = new ArticleController(sc, conn);
+    ArticleController articleController = new ArticleController(sc, conn, cmd);
 
     if (cmd.equals("member join")) {
       memberController.doJoin();
@@ -69,45 +69,7 @@ public class App {
     } else if (cmd.equals("article list")) {
       articleController.dolist();
     } else if (cmd.startsWith("article modify")) {
-      int id = 0;
-
-      try {
-        id = Integer.parseInt(cmd.split(" ")[2]);
-      } catch (Exception e) {
-        System.out.println("번호는 정수로 입력해");
-        return 0;
-      }
-      SecSql sql = new SecSql();
-      sql.append("SELECT *");
-      sql.append("FROM article");
-      sql.append("WHERE id = ?;", id);
-
-      Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-      if (articleMap.isEmpty()) {
-        System.out.println(id + "번 글은 없음");
-        return 0;
-      }
-
-      System.out.println("== 수정 ==");
-      System.out.print("새 제목 : ");
-      String title = sc.nextLine().trim();
-      System.out.print("새 내용 : ");
-      String body = sc.nextLine().trim();
-
-      sql = new SecSql();
-      sql.append("UPDATE article");
-      sql.append("SET updateDate = NOW()");
-      if (title.length() > 0) {
-        sql.append(", title = ?", title);
-      }
-      if (body.length() > 0) {
-        sql.append(", `body` = ?", body);
-      }
-      sql.append("WHERE id = ?;", id);
-
-      DBUtil.update(conn, sql);
-
-      System.out.println(id + "번 글이 수정되었습니다.");
+      articleController.domodify();
     } else if (cmd.startsWith("article detail")) {
       int id = 0;
 

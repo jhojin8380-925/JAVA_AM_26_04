@@ -36,4 +36,30 @@ public class ArticleDao {
     }
     return articles;
   }
+
+  public boolean doSelect(Connection conn, int id) {
+    SecSql sql = new SecSql();
+
+    sql.append("SELECT COUNT(*) > 0");
+    sql.append("FROM article");
+    sql.append("WHERE id = ?;", id);
+
+    return DBUtil.selectRowBooleanValue(conn, sql);
+  }
+
+  public int domodify(Connection conn, int id, String title, String body) {
+    SecSql sql = new SecSql();
+    sql = new SecSql();
+    sql.append("UPDATE article");
+    sql.append("SET updateDate = NOW()");
+    if (title.length() > 0) {
+      sql.append(", title = ?", title);
+    }
+    if (body.length() > 0) {
+      sql.append(", `body` = ?", body);
+    }
+    sql.append("WHERE id = ?;", id);
+
+    return DBUtil.update(conn, sql);
+  }
 }
