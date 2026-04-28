@@ -36,8 +36,9 @@ public class JDBCSelectTest {
         String updateDate = rs.getString("updateDate");
         String title = rs.getString("title");
         String body = rs.getString("body");
+        int memberId = rs.getInt("memberId");
 
-        Article article = new Article(id, regDate, updateDate, title, body);
+        Article article = new Article(id, regDate, updateDate, title, body, memberId);
 
         articles.add(article);
       }
@@ -48,6 +49,7 @@ public class JDBCSelectTest {
         System.out.println("수정일 : " + article.getUpdateDate());
         System.out.println("제목 : " + article.getTitle());
         System.out.println("내용 : " + article.getBody());
+        System.out.println("회원 아이디 : " + article.getmemberId());
       }
                                         // ----------------------------------구현
     } catch (ClassNotFoundException e) {

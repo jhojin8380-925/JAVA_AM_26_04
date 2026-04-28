@@ -8,6 +8,7 @@ public class Article {
   private String updateDate;
   private String title;
   private String body;
+  private int memberId;
 
   public Article(int id, String title, String body) {
     this.id = id;
@@ -15,12 +16,13 @@ public class Article {
     this.body = body;
   }
 
-  public Article(int id, String regDate, String updateDate, String title, String body) {
+  public Article(int id, String regDate, String updateDate, String title, String body, int memberId) {
     this.id = id;
     this.regDate = regDate;
     this.updateDate = updateDate;
     this.title = title;
     this.body = body;
+    this.memberId = memberId;
   }
 
   public Article(Map<String, Object> articleMap) {
@@ -29,6 +31,15 @@ public class Article {
     this.updateDate = (String) articleMap.get("updateDate");
     this.title = (String) articleMap.get("title");
     this.body = (String) articleMap.get("body");
+    this.memberId = (int) articleMap.get("memberId");
+  }
+
+  public int getmemberId() {
+    return memberId;
+  }
+
+  public void setmemberId(int memberId) {
+    this.memberId = memberId;
   }
 
   public String getRegDate() {

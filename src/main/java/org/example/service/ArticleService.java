@@ -14,8 +14,8 @@ public class ArticleService {
     this.articleDao = Container.articleDao;
   }
 
-  public int doWrite(String title, String body) {
-    return articleDao.doWrite(title, body);
+  public int doWrite(String title, String body, int memberId) {
+    return articleDao.doWrite(title, body, memberId);
   }
 
   public List<Article> getArticles() {
@@ -26,8 +26,8 @@ public class ArticleService {
     return articleDao.getArticleById(id);
   }
 
-  public void doUpdate(int id, String title, String body) {
-    articleDao.doUpdate(id, title, body);
+  public int doUpdate(int id, String title, String body) {
+    return articleDao.doUpdate(id, title, body);
   }
 
   public void doDelete(int id) {

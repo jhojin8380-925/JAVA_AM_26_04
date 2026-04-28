@@ -22,12 +22,17 @@ public class ArticleController {
   // 글 쓰기
   public void doWrite() {
     System.out.println("== 글쓰기 ==");
+    if (Container.session.loginedMember == null) {
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    }
     System.out.print("제목 : ");
     String title = sc.nextLine();
     System.out.print("내용 : ");
     String body = sc.nextLine();
+    int memberId = Container.session.loginedMemberId;
 
-    int id = articleService.doWrite(title, body);
+    int id = articleService.doWrite(title, body, memberId);
 
     System.out.println(id + "번 글이 생성됨");
   }
@@ -42,9 +47,9 @@ public class ArticleController {
       return;
     }
 
-    System.out.println("  번호  /   제목  ");
+    System.out.println("  번호  /   제목   /   회원번호");
     for (Article article : articles) {
-      System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
+      System.out.printf("  %d     /   %s    /     %d\n", article.getId(), article.getTitle(), article.getmemberId());
     }
   }
 
@@ -63,12 +68,23 @@ public class ArticleController {
       System.out.println(id + "번 글은 없음");
       return;
     }
+    int memberid = (int) articleMap.get("memberId");
+    if (Container.session.loginedMember == null) {
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    }
+    if (Container.session.loginedMemberId != memberid) {
+      System.out.println("해당 게시글에 대한 권한이 없습니다.");
+      return;
+    }
 
     System.out.println("== 수정 ==");
     System.out.print("새 제목 : ");
     String title = sc.nextLine().trim();
     System.out.print("새 내용 : ");
     String body = sc.nextLine().trim();
+
+    int num = articleService.doUpdate(id, title, body);
 
     System.out.println(id + "번 글이 수정되었습니다.");
   }
@@ -98,6 +114,7 @@ public class ArticleController {
     System.out.println("수정날짜 : " + article.getUpdateDate());
     System.out.println("제목 : " + article.getTitle());
     System.out.println("내용 : " + article.getBody());
+    System.out.println("회원번호 : " + article.getmemberId());
   }
 
   // 글 삭제
@@ -117,6 +134,16 @@ public class ArticleController {
       System.out.println(id + "번 글은 없음");
       return;
     }
+    int memberid = (int) articleMap.get("memberId");
+    if (Container.session.loginedMember == null) {
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    }
+    if (Container.session.loginedMemberId != memberid) {
+      System.out.println("해당 게시글에 대한 권한이 없습니다.");
+      return;
+    }
+
     System.out.println("== 삭제 ==");
     articleService.doDelete(id);
 

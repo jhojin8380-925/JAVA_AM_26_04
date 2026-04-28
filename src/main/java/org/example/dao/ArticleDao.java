@@ -11,14 +11,15 @@ import java.util.Map;
 
 public class ArticleDao {
 
-  public int doWrite(String title, String body) {
+  public int doWrite(String title, String body, int memberId) {
     SecSql sql = new SecSql();
 
     sql.append("INSERT INTO article");
     sql.append("SET regDate = NOW(),");
     sql.append("updateDate = NOW(),");
     sql.append("title = ?,", title);
-    sql.append("`body` = ?;", body);
+    sql.append("`body` = ?,", body);
+    sql.append("memberId = ?;", memberId);
 
     return DBUtil.insert(Container.conn, sql);
   }
@@ -49,7 +50,7 @@ public class ArticleDao {
   }
 
 
-  public void doUpdate(int id, String title, String body) {
+  public int doUpdate(int id, String title, String body) {
     SecSql sql = new SecSql();
 
     sql.append("UPDATE article");
@@ -61,8 +62,7 @@ public class ArticleDao {
       sql.append(", `body` = ?", body);
     }
     sql.append("WHERE id = ?;", id);
-
-    DBUtil.update(Container.conn, sql);
+    return DBUtil.update(Container.conn, sql);
   }
 
   public void doDelete(int id) {
