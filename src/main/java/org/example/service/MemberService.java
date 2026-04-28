@@ -27,4 +27,8 @@ public class MemberService {
   public int doModifyPw(int id, String loginPw) {
     return memberDao.doModifyPw(id, loginPw);
   }
+
+  public int doDeleteMember(int id) {
+    return memberDao.doDeleteMember(id);
+  }
 }

@@ -57,4 +57,12 @@ public class MemberDao {
     return DBUtil.update(Container.conn, sql);
 
   }
+
+  public int doDeleteMember(int id) {
+    SecSql sql = new SecSql();
+    sql.append("DELETE FROM `member`");
+    sql.append("WHERE id = ?;", id);
+
+    return DBUtil.delete(Container.conn, sql);
+  }
 }
