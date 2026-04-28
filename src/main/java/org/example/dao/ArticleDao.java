@@ -40,6 +40,22 @@ public class ArticleDao {
     return articles;
   }
 
+  public List<Article> getMemberArticles(int id) {
+    SecSql sql = new SecSql();
+    sql.append("SELECT *");
+    sql.append("FROM article");
+    sql.append("WHERE id = ?;", id);
+
+    List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
+
+    List<Article> articles = new ArrayList<>();
+
+    for (Map<String, Object> articleMap : articleListMap) {
+      articles.add(new Article(articleMap));
+    }
+    return articles;
+  }
+
   public Map<String, Object> getArticleById(int id) {
     SecSql sql = new SecSql();
     sql.append("SELECT *");

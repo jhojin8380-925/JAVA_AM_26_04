@@ -53,6 +53,25 @@ public class ArticleController {
     }
   }
 
+  public void showListMy() {
+    System.out.println("== 내 게시물 목록 ==");
+    if (Container.session.loginedMember == null) {  //콘테이너랑 세션을 이용하여 저장한 loginMember 값이 null 이면 비로그인상태
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    }
+
+    List<Article> articles = articleService.getMemberArticles(Container.session.loginedMemberId);
+    if (articles.size() == 0) {
+      System.out.println("게시글이 없습니다");
+      return;
+    }
+    System.out.println("  번호  /   제목   /   회원번호");
+    for (Article article : articles) {
+      System.out.printf("  %d     /   %s    /     %d\n", article.getId(), article.getTitle(), article.getmemberId());
+      //번호 표시 오류 회원번호가 -> 번호에 가있고 회원번호에는 다른 번호가 입려됨
+    }
+  }
+
   // 글 수정
   public void doModify(String cmd) {
     int id = 0;
@@ -69,6 +88,7 @@ public class ArticleController {
       return;
     }
     int memberid = (int) articleMap.get("memberId");  //SQL DB 에서 가져온 article 테이블의 memberId 값을 memberid 변수에 넣음
+
     if (Container.session.loginedMember == null) {  //콘테이너랑 세션을 이용하여 저장한 loginMember 값이 null 이면 비로그인상태
       System.out.println("로그인 상태가 아닙니다.");
       return;

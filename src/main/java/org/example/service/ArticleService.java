@@ -22,6 +22,10 @@ public class ArticleService {
     return articleDao.getArticles();
   }
 
+  public List<Article> getMemberArticles(int id) {
+    return articleDao.getMemberArticles(id);
+  }
+
   public Map<String, Object> getArticleById(int id) {
     return articleDao.getArticleById(id);
   }
