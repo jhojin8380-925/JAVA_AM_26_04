@@ -1,22 +1,15 @@
 package org.example.controller;
 
-import org.example.Member;
+import org.example.container.Container;
+import org.example.dto.Member;
 import org.example.service.MemberService;
 
-import java.sql.Connection;
-import java.util.List;
-import java.util.Scanner;
-
 public class MemberController {
-  private Connection conn;
-  private Scanner sc;
 
   private MemberService memberService;
 
-  public MemberController(Scanner sc, Connection conn) {
-    this.sc = sc;
-    this.conn = conn;
-    this.memberService = new MemberService();
+  public MemberController() {
+    this.memberService = Container.memberService;
   }
 
   public void doJoin() {
@@ -27,14 +20,14 @@ public class MemberController {
     System.out.println("==회원가입==");
     while (true) {
       System.out.print("로그인 아이디 : ");
-      loginId = sc.nextLine().trim();
+      loginId = Container.sc.nextLine().trim();
 
       if (loginId.length() == 0 || loginId.contains(" ")) {
         System.out.println("아이디 똑바로 써");
         continue;
       }
 
-      boolean isLoginIdDup = memberService.isLoginIdDup(conn, loginId);
+      boolean isLoginIdDup = memberService.isLoginIdDup(loginId);
 
       System.out.println(isLoginIdDup);
 
@@ -47,7 +40,7 @@ public class MemberController {
 
     while (true) {
       System.out.print("비밀번호 : ");
-      loginPw = sc.nextLine().trim();
+      loginPw = Container.sc.nextLine().trim();
 
       if (loginPw.length() == 0 || loginPw.contains(" ")) {
         System.out.println("비밀번호 똑바로 써");
@@ -58,7 +51,7 @@ public class MemberController {
 
       while (true) {
         System.out.print("비밀번호 확인 : ");
-        loginPwConfirm = sc.nextLine().trim();
+        loginPwConfirm = Container.sc.nextLine().trim();
 
         if (loginPwConfirm.length() == 0 || loginPwConfirm.contains(" ")) {
           System.out.println("비밀번호 확인 (똑바로 작성)");
@@ -77,7 +70,7 @@ public class MemberController {
     }
     while (true) {
       System.out.print("이름 : ");
-      name = sc.nextLine().trim();
+      name = Container.sc.nextLine().trim();
 
       if (name.length() == 0 || name.contains(" ")) {
         System.out.println("이름 똑바로 써");
@@ -86,69 +79,81 @@ public class MemberController {
       break;
     }
 
-    int id = memberService.doJoin(conn, loginId, loginPw, name);
+    int id = memberService.doJoin(loginId, loginPw, name);
 
     System.out.println(id + "번 회원 가입완료!");
   }
 
-  public void dologin() {
-    int loginIdcount = 0;
-    int loginPwcount = 0;
+  public void login() {
+    String loginId = null;
+    String loginPw = null;
+
+    System.out.println("== 로그인 ==");
     while (true) {
+      System.out.print("로그인 아이디 : ");
+      loginId = Container.sc.nextLine().trim();
 
-      System.out.print("아이디 : ");
-      String loginId = sc.nextLine().trim();
-      List<Member> members = memberService.getlogininfo(conn, loginId);
-      String CheckId = null;
-      String CheckPw = null;
-      String name = null;
-
-      System.out.println(members);
-      for (Member member : members) {
-        CheckId = member.getLoginId();
-        CheckPw = member.getLoginPw();
-        name = member.getName();
-      }
-
-      System.out.println(CheckId);
-      System.out.println(CheckPw);
-      System.out.println(name);
-      if (CheckId == null) {
-        System.out.println("아이디가 존재하지않습니다");
-        loginIdcount++;
-        if(loginIdcount == 3) {
-          System.out.println("3회이상 틀리셧습니다.");
-          System.out.println("로그인 실패.");
-          break;
-        }
+      if (loginId.length() == 0 || loginId.contains(" ")) {
+        System.out.println("아이디를 똑바로 써주세요.");
         continue;
       }
-      System.out.println("아이디가 일치합니다.");
+      boolean isLoginIdDup = memberService.isLoginIdDup(loginId);
 
-      while (true) {
-        System.out.print("비밀번호 : ");
-        String loginPw = sc.nextLine().trim();
-
-        if (!CheckPw.equals(loginPw)) {
-          System.out.println("비밀번호가 일치하지 않습니다.");
-          loginPwcount++;
-          if (loginPwcount == 3) {
-            System.out.println("3회이상 틀리셧습니다. 로그인 실패.");
-            CheckPw = null;
-            break;
-          }
-
-        }
-        System.out.println("로그인 성공");
-        System.out.println(name + "님 환영합니다.");
-        break;
+      if (isLoginIdDup == false) {
+        System.out.println(loginId + "은(는)없음");
+        continue;
       }
-      if (CheckPw == null) {
-        System.out.println("로그인 실패.");
-        break;
-      }
-
-
+      break;
     }
+    Member member = memberService.getMemberByLoginId(loginId);
+
+    int tryMaxCount = 3;
+    int tryCount = 0;
+
+    while (true) {
+      if (tryCount >= tryMaxCount) {
+        System.out.println("비밀번호 확인하고 다시 시도!");
+        break;
+      }
+      System.out.print("비밀번호 : ");
+      loginPw = Container.sc.nextLine().trim();
+
+      if (loginPw.length() == 0 || loginPw.contains(" ")) {
+        tryCount++;
+        System.out.printf("비밀번호를 똑바로 작성 (%d/3)\n", tryCount);
+        continue;
+      }
+      if (member.getLoginPw().equals(loginPw) == false) {
+        tryCount++;
+        System.out.printf("비밀번호를 똑바로 작성 (%d/3)\n", tryCount);
+        continue;
+      }
+
+      Container.session.loginedMember = member;
+      Container.session.loginedMemberId = member.getId();
+
+
+      System.out.println(member.getName() + "님, 로그인 성공!");
+      break;
+    }
+  }
+
+  public void showProfile(){
+    if (Container.session.loginedMember == null){
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    } else {
+      System.out.println(Container.session.loginedMember);
+    }
+  }
+
+  public void logout(){
+    if (Container.session.loginedMember == null) {
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    }
+    System.out.println("== 로그아웃 됨 ==");
+    Container.session.loginedMember = null;
+    Container.session.loginedMemberId = -1;
   }
 }

@@ -1,28 +1,26 @@
 package org.example.service;
 
-import org.example.Member;
+import org.example.container.Container;
 import org.example.dao.MemberDao;
-
-import java.sql.Connection;
-import java.util.List;
+import org.example.dto.Member;
 
 public class MemberService {
 
   private MemberDao memberDao;
 
   public MemberService() {
-    this.memberDao = new MemberDao();
+    this.memberDao = Container.memberDao;
   }
 
-  public boolean isLoginIdDup(Connection conn, String loginId) {
-    return memberDao.isLoginIdDup(conn, loginId);
+  public boolean isLoginIdDup(String loginId) {
+    return memberDao.isLoginIdDup(loginId);
   }
 
-  public int doJoin(Connection conn, String loginId, String loginPw, String name) {
-    return memberDao.doJoin(conn, loginId, loginPw, name);
+  public int doJoin(String loginId, String loginPw, String name) {
+    return memberDao.doJoin(loginId, loginPw, name);
   }
 
-  public List<Member> getlogininfo(Connection conn, String loginId) {
-    return memberDao.getlogininfo(conn, loginId);
+  public Member getMemberByLoginId(String loginId) {
+    return memberDao.getMemberByLoginId(loginId);
   }
 }

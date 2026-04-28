@@ -1,4 +1,4 @@
-package org.example;
+package org.example.dto;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public class Member {
   private String loginPw;
   private String name;
 
-  public Member (int id, String regDate, String updateDate, String loginId, String loginPw, String name) {
+  public Member(int id, String regDate, String updateDate, String loginId, String loginPw, String name){
     this.id = id;
     this.regDate = regDate;
     this.updateDate = updateDate;
@@ -19,13 +19,25 @@ public class Member {
     this.name = name;
   }
 
-  public Member (Map<String, Object> membersMap) {
-    this.id = (int) membersMap.get("id");
-    this.regDate = (String) membersMap.get("regDate");
-    this.updateDate = (String) membersMap.get("updateDate");
-    this.loginId = (String) membersMap.get("loginId");
-    this.loginPw = (String) membersMap.get("loginPw");
-    this.name = (String) membersMap.get("name");
+  public Member(Map<String , Object> memberMap){
+    this.id = (int) memberMap.get("id");
+    this.regDate = (String) memberMap.get("regDate");
+    this.updateDate = (String) memberMap.get("updateDate");
+    this.loginId = (String) memberMap.get("loginId");
+    this.loginPw = (String) memberMap.get("loginPw");
+    this.name = (String) memberMap.get("name");
+  }
+
+  @Override
+  public String toString() {
+    return "Member{" +
+        "id=" + id +
+        ", regDate='" + regDate + '\'' +
+        ", updateDate='" + updateDate + '\'' +
+        ", loginId='" + loginId + '\'' +
+        ", loginPw='" + loginPw + '\'' +
+        ", name='" + name + '\'' +
+        '}';
   }
 
   public int getId() {
@@ -75,5 +87,4 @@ public class Member {
   public void setName(String name) {
     this.name = name;
   }
-
 }

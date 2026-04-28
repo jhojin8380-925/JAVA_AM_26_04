@@ -1,40 +1,36 @@
 package org.example.service;
 
-import org.example.Article;
+import org.example.container.Container;
 import org.example.dao.ArticleDao;
+import org.example.dto.Article;
 
-import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 public class ArticleService {
-
   private ArticleDao articleDao;
 
   public ArticleService() {
-    this.articleDao = new ArticleDao();
+    this.articleDao = Container.articleDao;
   }
 
-  public int dowrite(Connection conn, String title, String body) {
-    return articleDao.dowrite(conn, title, body);
+  public int doWrite(String title, String body) {
+    return articleDao.doWrite(title, body);
   }
 
-  public List<Article> dolist(Connection conn) {
-    return articleDao.dolist(conn);
+  public List<Article> getArticles() {
+    return articleDao.getArticles();
   }
 
-  public boolean doSelect(Connection conn, int id) {
-    return articleDao.doSelect(conn, id);
+  public Map<String, Object> getArticleById(int id) {
+    return articleDao.getArticleById(id);
   }
 
-  public int domodify(Connection conn, int id, String title, String body) {
-    return articleDao.domodify(conn, id, title, body);
+  public void doUpdate(int id, String title, String body) {
+    articleDao.doUpdate(id, title, body);
   }
 
-  public List<Article> dodetail(Connection conn, int id) {
-    return articleDao.dodetail(conn, id);
-  }
-
-  public int dodelete(Connection conn, int id) {
-    return articleDao.dodelete(conn, id);
+  public void doDelete(int id) {
+    articleDao.doDelete(id);
   }
 }

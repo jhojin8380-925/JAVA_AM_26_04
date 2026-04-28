@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.container.Container;
 import org.example.controller.ArticleController;
 import org.example.controller.MemberController;
 
@@ -9,9 +10,16 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class App {
+
+  private Scanner sc;
+
+  public App() {
+    Container.init();
+    sc = Container.sc;
+  }
+
   public void run() {
     System.out.println("==프로그램 시작==");
-    Scanner sc = new Scanner(System.in);
 
     while (true) {
       System.out.print("명령어 ) ");
@@ -29,8 +37,9 @@ public class App {
 
       try {
         conn = DriverManager.getConnection(url, "root", "");
+        Container.conn = conn;
 
-        int actionResult = action(conn, sc, cmd);
+        int actionResult = action(cmd);
 
         if (actionResult == -1) {
           System.out.println("== 프로그램 종료 ==");
@@ -52,27 +61,31 @@ public class App {
     }
   }
 
-  private int action(Connection conn, Scanner sc, String cmd) {
+  private int action(String cmd) {
     if (cmd.equals("exit")) {
       return -1;
     }
-    MemberController memberController = new MemberController(sc, conn);
-    ArticleController articleController = new ArticleController(sc, conn, cmd);
+    MemberController memberController = Container.memberController;
+    ArticleController articleController = Container.articleController;
 
-    if (cmd.equals("member join")) {
+    if (cmd.equals("member logout")) {
+      memberController.logout();
+    } else if (cmd.equals("member profile")) {
+      memberController.showProfile();
+    } else if (cmd.equals("member login")) {
+      memberController.login();
+    } else if (cmd.equals("member join")) {
       memberController.doJoin();
-    } else if (cmd.equals("member login")){
-      memberController.dologin();
     } else if (cmd.equals("article write")) {
-      articleController.dowrite();
+      articleController.doWrite();
     } else if (cmd.equals("article list")) {
-      articleController.dolist();
+      articleController.showList();
     } else if (cmd.startsWith("article modify")) {
-      articleController.domodify();
+      articleController.doModify(cmd);
     } else if (cmd.startsWith("article detail")) {
-      articleController.dodetail();
+      articleController.showDetail(cmd);
     } else if (cmd.startsWith("article delete")) {
-      articleController.dodelete();
+      articleController.doDelete(cmd);
     }
     return 0;
   }
