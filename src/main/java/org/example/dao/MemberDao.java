@@ -45,4 +45,16 @@ public class MemberDao {
     }
     return new Member(memberMap);
   }
+
+  public int doModifyPw(int id, String loginPw) {
+
+    SecSql sql = new SecSql();
+
+    sql.append("UPDATE `member`");
+    sql.append("SET updateDate = NOW()");
+    sql.append(", loginPw = ?", loginPw);
+    sql.append("WHERE id = ?;", id);
+    return DBUtil.update(Container.conn, sql);
+
+  }
 }

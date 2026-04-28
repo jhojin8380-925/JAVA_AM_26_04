@@ -67,8 +67,9 @@ public class App {
     }
     MemberController memberController = Container.memberController;
     ArticleController articleController = Container.articleController;
-
-    if (cmd.equals("member logout")) {
+    if (cmd.equals("member modify")) {
+      memberController.loginmodify();
+    } else if (cmd.equals("member logout")) {
       memberController.logout();
     } else if (cmd.equals("member profile")) {
       memberController.showProfile();

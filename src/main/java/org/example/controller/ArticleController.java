@@ -68,12 +68,12 @@ public class ArticleController {
       System.out.println(id + "번 글은 없음");
       return;
     }
-    int memberid = (int) articleMap.get("memberId");
-    if (Container.session.loginedMember == null) {
+    int memberid = (int) articleMap.get("memberId");  //SQL DB 에서 가져온 article 테이블의 memberId 값을 memberid 변수에 넣음
+    if (Container.session.loginedMember == null) {  //콘테이너랑 세션을 이용하여 저장한 loginMember 값이 null 이면 비로그인상태
       System.out.println("로그인 상태가 아닙니다.");
       return;
     }
-    if (Container.session.loginedMemberId != memberid) {
+    if (Container.session.loginedMemberId != memberid) {   //회원번호가 다르면 권한이 없음.
       System.out.println("해당 게시글에 대한 권한이 없습니다.");
       return;
     }

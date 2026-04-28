@@ -25,7 +25,7 @@ public class Article {
     this.memberId = memberId;
   }
 
-  public Article(Map<String, Object> articleMap) {
+  public Article(Map<String, Object> articleMap) {  //SQL 에서 가져온 값을 볼 수 있게 도와주는 함수
     this.id = (int) articleMap.get("id");
     this.regDate = (String) articleMap.get("regDate");
     this.updateDate = (String) articleMap.get("updateDate");

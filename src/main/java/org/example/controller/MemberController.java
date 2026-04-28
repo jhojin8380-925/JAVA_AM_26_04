@@ -156,4 +156,28 @@ public class MemberController {
     Container.session.loginedMember = null;
     Container.session.loginedMemberId = -1;
   }
+
+  public void loginmodify() {
+    if (Container.session.loginedMember == null) {
+      System.out.println("로그인 상태가 아닙니다.");
+      return;
+    }
+    System.out.println("회원 번호 : " + Container.session.loginedMemberId);
+    while (true) {
+      System.out.print("비밀번호 변경 : ");
+      String loginPw = Container.sc.nextLine().trim();
+      System.out.print("비밀번호 확인 : ");
+      String loginPwConf = Container.sc.nextLine().trim();
+
+      if (!loginPw.equals(loginPwConf)) {
+        System.out.println("비밀번호가 다릅니다. 다시 입력해주세요");
+        continue;
+      }
+
+      int id = memberService.doModifyPw(Container.session.loginedMemberId, loginPw);
+
+      System.out.println("비밀번호 변경 완료.");
+      break;
+    }
+  }
 }
